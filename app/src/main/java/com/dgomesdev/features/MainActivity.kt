@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             WomenWorldCupTheme {
                 val state by viewModel.state.collectAsState()
-                MainScreen(matches = state.matches, viewModel::toggleNotification)
+                MainScreen(matches = state.matches, viewModel::toggleNotification, viewModel::filterMatches)
             }
         }
     }
@@ -38,4 +38,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-

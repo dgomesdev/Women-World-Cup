@@ -10,7 +10,7 @@ import androidx.core.app.NotificationManagerCompat
 import com.dgomesdev.women_world_cup.notification_scheduler.R
 
 private const val CHANNEL_ID = "new_channel_video"
-private const val NOTIFICATION_NAME = "Notificações"
+private const val NOTIFICATION_NAME = "Notifications"
 private const val NOTIFICATION_INTENT_REQUEST_CODE = 0
 
 fun Context.showNotification(title: String, content: String) {

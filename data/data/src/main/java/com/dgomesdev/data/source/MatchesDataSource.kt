@@ -9,6 +9,7 @@ sealed interface MatchesDataSource {
     }
 
     interface Local : MatchesDataSource {
+        fun filterMatches(filterType: String, filter: String): List<MatchDomain>
         fun getActiveNotificationIds(): Flow<Set<String>>
         suspend fun enableNotificationFor(id: String)
         suspend fun disableNotificationFor(id: String)

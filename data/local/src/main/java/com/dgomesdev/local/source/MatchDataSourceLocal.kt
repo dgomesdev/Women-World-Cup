@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import com.dgomesdev.data.source.MatchesDataSource
+import com.dgomesdev.domain.model.MatchDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -14,6 +15,9 @@ class MatchDataSourceLocal @Inject constructor(
 ) : MatchesDataSource.Local {
 
     private val key = stringSetPreferencesKey("notification_ids")
+    override fun filterMatches(filterType: String, filter: String): List<MatchDomain> {
+        TODO("Not yet implemented")
+    }
 
     override fun getActiveNotificationIds(): Flow<Set<String>> =
         dataStore.data
