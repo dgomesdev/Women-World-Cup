@@ -36,7 +36,7 @@ fun MainMenuBody(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    onItemClick("group", "GROUP F")
+                    onItemClick("group", "")
                 }
                 .padding(16.dp)
         ) {
@@ -50,7 +50,7 @@ fun MainMenuBody(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    onItemClick("stadium", "HINDMARSH STADIUM")
+                    onItemClick("stadium", "")
                 }
                 .padding(16.dp)
         ) {
@@ -64,7 +64,7 @@ fun MainMenuBody(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    onItemClick("team", "BRA")
+                    onItemClick("team", "")
                 }
                 .padding(16.dp)
         ) {

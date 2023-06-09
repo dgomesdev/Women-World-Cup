@@ -21,17 +21,26 @@ import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.material.Scaffold
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -74,13 +83,19 @@ fun MainScreen(
             MainMenuHeader()
             MainMenuBody(onItemClick = filterOnClick)
         },
-        bottomBar = { MatchesBottomNavigation() }
+        bottomBar = { MatchesBottomNavigation() },
     ) { padding ->
-        MatchesList(
-            Modifier.padding(padding),
-            matches = matches,
-            onNotificationClick = onNotificationClick
-        )
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Spacer(modifier = Modifier.size(16.dp))
+            FilterChoice()
+            Spacer(modifier = Modifier.size(16.dp))
+            MatchesList(
+                Modifier.padding(padding),
+                matches = matches,
+                onNotificationClick = onNotificationClick
+            )
+        }
+
     }
 }
 
@@ -113,6 +128,41 @@ private fun MatchTopBar(
         },
         backgroundColor = MaterialTheme.colors.background
     )
+}
+
+@Composable
+fun FilterChoice() {
+    var expanded by remember { mutableStateOf(false) }
+    var buttonText by rememberSaveable { mutableStateOf("All matches") }
+    FilterButton(
+        expanded = expanded,
+        onExpandedChange = { expanded = it},
+        buttonText = buttonText,
+        onTextChange = { buttonText = it}
+    )
+}
+
+@Composable
+fun FilterButton(
+    expanded: Boolean,
+    onExpandedChange: (Boolean) -> Unit,
+    buttonText: String,
+    onTextChange: (String) -> Unit
+) {
+    Column {
+        ElevatedButton(onClick = { onExpandedChange(true)}) {
+            Text(text = buttonText)
+            Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = "")
+        }
+        DropdownMenu(expanded = expanded, onDismissRequest = { onExpandedChange(false) }) {
+            DropdownMenuItem(
+                text = { Text("Filter matches") },
+                onClick = {
+                    onTextChange("Filtered Matches")
+                    onExpandedChange(false)
+                })
+        }
+    }
 }
 
 @Composable
