@@ -6,89 +6,78 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.runtime.Composable
 
 @Composable
-fun FilterMatchesByStage() {
-    DropdownMenu(expanded = false, onDismissRequest = { }) {
-        DropdownMenuItem(
-            text = { Text("Group A") },
-            onClick = {
-
-            })
-        DropdownMenuItem(
-            text = { Text("Group B") },
-            onClick = {
-
-            })
-        DropdownMenuItem(
-            text = { Text("Group C") },
-            onClick = {
-
-            })
-        DropdownMenuItem(
-            text = { Text("Group D") },
-            onClick = {
-
-            })
-        DropdownMenuItem(
-            text = { Text("Group E") },
-            onClick = {
-
-            })
-        DropdownMenuItem(
-            text = { Text("Group F") },
-            onClick = {
-
-            })
-        DropdownMenuItem(
-            text = { Text("Group G") },
-            onClick = {
-
-            })
-        DropdownMenuItem(
-            text = { Text("Group H") },
-            onClick = {
-
-            })
-        DropdownMenuItem(
-            text = { Text("Round of 16") },
-            onClick = {
-
-            })
-        DropdownMenuItem(
-            text = { Text("Quarter finals") },
-            onClick = {
-
-            })
-        DropdownMenuItem(
-            text = { Text("Semi finals") },
-            onClick = {
-
-            })
-        DropdownMenuItem(
-            text = { Text("Finals") },
-            onClick = {
-
-            })
+fun FilterMatchesByStage(
+    expanded: Boolean,
+    onExpandChange: (Boolean) -> Unit,
+    onTextButtonChange: (String) -> Unit,
+    onFilterChosen: (String, String) -> Unit,
+    stages: List<String>
+) {
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = { onExpandChange(false) }
+    ) {
+        for(stage in stages) {
+            DropdownMenuItem(
+                text = { Text(stage) },
+                onClick = {
+                    onTextButtonChange(stage)
+                    onFilterChosen("stage", stage.uppercase())
+                    onExpandChange(false)
+                }
+            )
+        }
     }
 }
 
 @Composable
-fun FilterMatchesByStadium() {
-    DropdownMenu(expanded = false, onDismissRequest = { }) {
-        DropdownMenuItem(
-            text = { Text("Group A") },
-            onClick = {
-
-            })
+fun FilterMatchesByStadium(
+    expanded: Boolean,
+    onExpandChange: (Boolean) -> Unit,
+    onTextButtonChange: (String) -> Unit,
+    onFilterChosen: (String, String) -> Unit,
+    stadiums: List<String>
+) {
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = { onExpandChange(false) }
+    ) {
+        for(stadium in stadiums) {
+            DropdownMenuItem(
+                text = { Text(stadium) },
+                onClick = {
+                    onTextButtonChange(stadium)
+                    onFilterChosen("stadium", stadium.uppercase())
+                    onExpandChange(false)
+                }
+            )
+        }
     }
 }
 
 @Composable
-fun FilterMatchesByTeam() {
-    DropdownMenu(expanded = false, onDismissRequest = { }) {
-        DropdownMenuItem(
-            text = { Text("Group A") },
-            onClick = {
+fun FilterMatchesByTeam(
+    expanded: Boolean,
+    onExpandChange: (Boolean) -> Unit,
+    onTextButtonChange: (String) -> Unit,
+    onFilterChosen: (String, String) -> Unit,
+    countries: Map<String, String>
+) {
 
-            })
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = { onExpandChange(false) }
+    ) {
+        for(country in countries.entries.iterator()) {
+            DropdownMenuItem(
+                text = { Text(country.key) },
+                onClick = {
+                    onTextButtonChange(country.key)
+                    onFilterChosen("team", country.value.uppercase())
+                    onExpandChange(false)
+                }
+            )
+        }
+
     }
 }

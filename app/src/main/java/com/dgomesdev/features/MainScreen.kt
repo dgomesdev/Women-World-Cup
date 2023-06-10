@@ -2,6 +2,7 @@ package com.dgomesdev.features
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,8 +32,6 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -58,16 +57,19 @@ import com.dgomesdev.women_world_cup.R
 import kotlinx.coroutines.launch
 
 typealias NotificationOnClick = (match: MatchDomain) -> Unit
-typealias FilterOnClick = (filterType: String, filter: String) -> Unit
+typealias ChooseFilter = (filterType: String, filter: String) -> Unit
 
 @Composable
 fun MainScreen(
     matches: List<MatchDomain>,
     onNotificationClick: NotificationOnClick,
-    filterOnClick: FilterOnClick
+    onFilterChosen: ChooseFilter
 ) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
+    var filterButtonText by rememberSaveable {
+        mutableStateOf("All matches")
+    }
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
@@ -81,13 +83,19 @@ fun MainScreen(
         },
         drawerContent = {
             MainMenuHeader()
-            MainMenuBody(onItemClick = filterOnClick)
+            MainMenuBody(
+                onFilterButtonTextChange = {filterButtonText = it},
+                onFilterSelected = {
+                scope.launch {
+                    scaffoldState.drawerState.close()
+                }
+            })
         },
-        bottomBar = { MatchesBottomNavigation() },
+        bottomBar = { MatchesBottomNavigation() }
     ) { padding ->
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Spacer(modifier = Modifier.size(16.dp))
-            FilterChoice()
+            FilterChoice(filterButtonText, onTextChange = { filterButtonText = it}, onFilterChosen = onFilterChosen)
             Spacer(modifier = Modifier.size(16.dp))
             MatchesList(
                 Modifier.padding(padding),
@@ -111,7 +119,7 @@ private fun MatchTopBar(
             )
         },
         navigationIcon = {
-            IconButton(onClick = onNavigationIconClick ) {
+            IconButton(onClick = onNavigationIconClick) {
                 Icon(
                     imageVector = Icons.Filled.Menu,
                     contentDescription = "Localized description"
@@ -131,14 +139,18 @@ private fun MatchTopBar(
 }
 
 @Composable
-fun FilterChoice() {
+fun FilterChoice(
+    buttonText: String,
+    onTextChange: (String) -> Unit,
+    onFilterChosen: ChooseFilter
+) {
     var expanded by remember { mutableStateOf(false) }
-    var buttonText by rememberSaveable { mutableStateOf("All matches") }
     FilterButton(
         expanded = expanded,
-        onExpandedChange = { expanded = it},
+        onExpandedChange = { expanded = it },
         buttonText = buttonText,
-        onTextChange = { buttonText = it}
+        onTextChange = onTextChange,
+        onFilterChosen = onFilterChosen
     )
 }
 
@@ -147,20 +159,44 @@ fun FilterButton(
     expanded: Boolean,
     onExpandedChange: (Boolean) -> Unit,
     buttonText: String,
-    onTextChange: (String) -> Unit
+    onTextChange: (String) -> Unit,
+    onFilterChosen: ChooseFilter
 ) {
+    val listOfStages = FilterLists.stagesList
+    val listOfStadiums = FilterLists.stadiumsList
+    val listOfTeams = FilterLists.teamsList
     Column {
-        ElevatedButton(onClick = { onExpandedChange(true)}) {
+        ElevatedButton(
+            onClick = { onExpandedChange(true) },
+            modifier = Modifier.background(color = MaterialTheme.colors.background)
+        ) {
             Text(text = buttonText)
             Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = "")
         }
-        DropdownMenu(expanded = expanded, onDismissRequest = { onExpandedChange(false) }) {
-            DropdownMenuItem(
-                text = { Text("Filter matches") },
-                onClick = {
-                    onTextChange("Filtered Matches")
-                    onExpandedChange(false)
-                })
+        when {
+            listOfStadiums.contains(buttonText) -> FilterMatchesByStadium(
+                expanded = expanded,
+                onExpandChange = onExpandedChange,
+                onTextButtonChange = onTextChange,
+                onFilterChosen = onFilterChosen,
+                stadiums = listOfStadiums
+            )
+
+            listOfTeams.contains(buttonText) -> FilterMatchesByTeam(
+                expanded = expanded,
+                onExpandChange = onExpandedChange,
+                onTextButtonChange = onTextChange,
+                onFilterChosen = onFilterChosen,
+                countries = listOfTeams
+            )
+
+            else -> FilterMatchesByStage(
+                expanded = expanded,
+                onExpandChange = onExpandedChange,
+                onTextButtonChange = onTextChange,
+                onFilterChosen = onFilterChosen,
+                stages = listOfStages
+            )
         }
     }
 }

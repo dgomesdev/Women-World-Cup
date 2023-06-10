@@ -25,7 +25,7 @@ class MatchesRepositoryImpl @Inject constructor(
 
     override suspend fun filterMatches(filterType: String, filter: String): Flow<List<Match>> {
         val filteredList = when (filterType) {
-            "group" -> {
+            "stage" -> {
                 flowOf( remoteDataSource.getMatches().filter {
                     it.name == filter
                 } )
