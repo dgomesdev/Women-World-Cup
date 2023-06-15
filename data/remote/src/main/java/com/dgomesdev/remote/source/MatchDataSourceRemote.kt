@@ -11,9 +11,9 @@ class MatchDataSourceRemote @Inject constructor(
     private val service: MatchesServices
 ) : MatchesDataSource.Remote {
 
-    override suspend fun getMatches(): List<MatchDomain> {
+    override suspend fun getMatchesFromRemoteDataSource(): List<MatchDomain> {
         return runCatching {
-            service.getMatches()
+            service.getMatchesService()
         }.getOrThrowDomainError().toDomain()
     }
 }

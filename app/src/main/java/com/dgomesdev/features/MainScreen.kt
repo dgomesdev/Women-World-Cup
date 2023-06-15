@@ -1,5 +1,6 @@
 package com.dgomesdev.features
 
+import android.content.res.Resources.Theme
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,11 +19,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
@@ -31,13 +33,11 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -53,62 +53,40 @@ import com.dgomesdev.domain.extensions.getDate
 import com.dgomesdev.domain.model.MatchDomain
 import com.dgomesdev.domain.model.TeamDomain
 import com.dgomesdev.ui.theme.Shapes
+import com.dgomesdev.ui.theme.WomenWorldCupTheme
 import com.dgomesdev.women_world_cup.R
-import kotlinx.coroutines.launch
 
 typealias NotificationOnClick = (match: MatchDomain) -> Unit
 typealias ChooseFilter = (filterType: String, filter: String) -> Unit
+typealias RefreshFavoritesScreen = () -> Unit
 
 @Composable
 fun MainScreen(
     matches: List<MatchDomain>,
     onNotificationClick: NotificationOnClick,
-    onFilterChosen: ChooseFilter
+    onFilterChosen: ChooseFilter,
+    onRefreshFavoritesScreen: RefreshFavoritesScreen,
+    filterButtonText: String
 ) {
-    val scaffoldState = rememberScaffoldState()
-    val scope = rememberCoroutineScope()
-    var filterButtonText by rememberSaveable {
-        mutableStateOf("All matches")
+    var filterButtonText by remember {
+        mutableStateOf(filterButtonText)
     }
-    Scaffold(
-        scaffoldState = scaffoldState,
-        topBar = {
-            MatchTopBar(
-                onNavigationIconClick = {
-                    scope.launch {
-                        scaffoldState.drawerState.open()
-                    }
-                }
-            )
-        },
-        drawerContent = {
-            MainMenuHeader()
-            MainMenuBody(
-                onFilterButtonTextChange = {filterButtonText = it},
-                onFilterSelected = {
-                scope.launch {
-                    scaffoldState.drawerState.close()
-                }
-            })
-        },
-        bottomBar = { MatchesBottomNavigation() }
-    ) { padding ->
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Spacer(modifier = Modifier.size(16.dp))
             FilterChoice(filterButtonText, onTextChange = { filterButtonText = it}, onFilterChosen = onFilterChosen)
             Spacer(modifier = Modifier.size(16.dp))
             MatchesList(
-                Modifier.padding(padding),
+                Modifier.padding(16.dp),
                 matches = matches,
-                onNotificationClick = onNotificationClick
+                onNotificationClick = onNotificationClick,
+                onRefreshFavoritesScreen = onRefreshFavoritesScreen
             )
         }
 
-    }
 }
 
 @Composable
-private fun MatchTopBar(
+fun MatchTopBar(
     onNavigationIconClick: () -> Unit
 ) {
     val context = LocalContext.current
@@ -134,7 +112,7 @@ private fun MatchTopBar(
                 )
             }
         },
-        backgroundColor = MaterialTheme.colors.background
+        backgroundColor = MaterialTheme.colors.onSurface
     )
 }
 
@@ -168,7 +146,9 @@ fun FilterButton(
     Column {
         ElevatedButton(
             onClick = { onExpandedChange(true) },
-            modifier = Modifier.background(color = MaterialTheme.colors.background)
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colors.onSurface
+            )
         ) {
             Text(text = buttonText)
             Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = "")
@@ -205,7 +185,8 @@ fun FilterButton(
 fun MatchesList(
     modifier: Modifier = Modifier,
     matches: List<MatchDomain>,
-    onNotificationClick: NotificationOnClick
+    onNotificationClick: NotificationOnClick,
+    onRefreshFavoritesScreen: RefreshFavoritesScreen
 ) {
     Box(
         modifier = modifier
@@ -214,14 +195,18 @@ fun MatchesList(
     ) {
         LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             items(matches) { match ->
-                MatchInfo(match, onNotificationClick)
+                MatchInfo(match, onNotificationClick, onRefreshFavoritesScreen)
             }
         }
     }
 }
 
 @Composable
-fun MatchInfo(match: MatchDomain, onNotificationClick: NotificationOnClick) {
+fun MatchInfo(
+    match: MatchDomain,
+    onNotificationClick: NotificationOnClick,
+    onRefreshFavoritesScreen: RefreshFavoritesScreen
+) {
     Card(
         shape = Shapes.large,
         modifier = Modifier.fillMaxWidth()
@@ -235,7 +220,7 @@ fun MatchInfo(match: MatchDomain, onNotificationClick: NotificationOnClick) {
             )
 
             Column(modifier = Modifier.padding(16.dp)) {
-                Notification(match, onNotificationClick)
+                Notification(match, onNotificationClick, onRefreshFavoritesScreen)
                 Title(match)
                 Teams(match)
             }
@@ -244,7 +229,11 @@ fun MatchInfo(match: MatchDomain, onNotificationClick: NotificationOnClick) {
 }
 
 @Composable
-fun Notification(match: MatchDomain, onClick: NotificationOnClick) {
+fun Notification(
+    match: MatchDomain,
+    onClick: NotificationOnClick,
+    onRefreshFavoritesScreen: RefreshFavoritesScreen
+) {
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
         val drawable = if (match.isNotificationEnabled) R.drawable.ic_notifications_active
         else R.drawable.ic_notifications
@@ -253,6 +242,7 @@ fun Notification(match: MatchDomain, onClick: NotificationOnClick) {
             painter = painterResource(id = drawable),
             modifier = Modifier.clickable {
                 onClick(match)
+                onRefreshFavoritesScreen()
             },
             contentDescription = null
         )
@@ -311,9 +301,19 @@ fun TeamItem(team: TeamDomain) {
 }
 
 @Composable
-private fun MatchesBottomNavigation(modifier: Modifier = Modifier) {
+fun MatchesBottomNavigation(
+    modifier: Modifier = Modifier,
+    onScreenSelected: (String) -> Unit,
+    onRefreshFavoritesScreen: RefreshFavoritesScreen
+) {
+    var selectedMainScreenState by remember {
+        mutableStateOf(true)
+    }
+    var selectedFavoritesScreenState by remember {
+        mutableStateOf(!false)
+    }
     BottomNavigation(
-        backgroundColor = MaterialTheme.colors.background,
+        backgroundColor = MaterialTheme.colors.onSurface,
         modifier = modifier
     ) {
         BottomNavigationItem(
@@ -326,8 +326,12 @@ private fun MatchesBottomNavigation(modifier: Modifier = Modifier) {
             label = {
                 Text("Home")
             },
-            selected = true,
-            onClick = {}
+            selected = selectedMainScreenState,
+            onClick = {
+                onScreenSelected("MainScreen")
+                selectedMainScreenState = true
+                selectedFavoritesScreenState = false
+            }
         )
         BottomNavigationItem(
             icon = {
@@ -339,8 +343,13 @@ private fun MatchesBottomNavigation(modifier: Modifier = Modifier) {
             label = {
                 Text("Favorites")
             },
-            selected = false,
-            onClick = {}
+            selected = selectedFavoritesScreenState,
+            onClick = {
+                onScreenSelected("FavoritesScreen")
+                onRefreshFavoritesScreen()
+                selectedFavoritesScreenState = true
+                selectedMainScreenState = false
+            }
         )
     }
 }

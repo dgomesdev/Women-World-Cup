@@ -14,8 +14,8 @@ class MatchesRepositoryImpl @Inject constructor(
     private val remoteDataSource: MatchesDataSource.Remote,
 ) : MatchesRepository {
 
-    override suspend fun getMatches(): Flow<List<MatchDomain>> {
-        return flowOf(remoteDataSource.getMatches())
+    override suspend fun getRemoteMatchesFromRepository(): Flow<List<MatchDomain>> {
+        return flowOf(remoteDataSource.getMatchesFromRemoteDataSource())
             .combine(localDataSource.getActiveNotificationIds()) { matches: List<MatchDomain>, ids: Set<String> ->
                 matches.map { match ->
                     match.copy(isNotificationEnabled = ids.contains(match.id))
@@ -23,27 +23,39 @@ class MatchesRepositoryImpl @Inject constructor(
             }
     }
 
-    override suspend fun filterMatches(filterType: String, filter: String): Flow<List<Match>> {
+    override suspend fun getLocalMatchesFromRepository(): Flow<List<MatchDomain>> {
+        return flowOf(localDataSource.getMatchesFromLocalDataSource())
+            .combine(localDataSource.getActiveNotificationIds()) { matches: List<MatchDomain>, _: Set<String> ->
+                matches.map { match ->
+                    match.copy(isNotificationEnabled = true)
+                }
+            }
+    }
+
+    override suspend fun filterMatches(
+        filterType: String,
+        filter: String
+    ): Flow<List<Match>> {
         val filteredList = when (filterType) {
             "stage" -> {
-                flowOf( remoteDataSource.getMatches().filter {
+                flowOf(remoteDataSource.getMatchesFromRemoteDataSource().filter {
                     it.name == filter
-                } )
+                })
             }
 
             "stadium" -> {
-                flowOf( remoteDataSource.getMatches().filter {
+                flowOf(remoteDataSource.getMatchesFromRemoteDataSource().filter {
                     it.stadium.name == filter
-                } )
+                })
             }
 
             "team" -> {
-                flowOf( remoteDataSource.getMatches().filter {
+                flowOf(remoteDataSource.getMatchesFromRemoteDataSource().filter {
                     it.homeTeam.displayName == filter || it.awayTeam.displayName == filter
-                } )
+                })
             }
 
-            else -> getMatches()
+            else -> getRemoteMatchesFromRepository()
         }
         return filteredList.combine(localDataSource.getActiveNotificationIds()) { matches: List<MatchDomain>, ids: Set<String> ->
             matches.map { match ->
@@ -52,11 +64,12 @@ class MatchesRepositoryImpl @Inject constructor(
         }
     }
 
-override suspend fun enableNotificationFor(id: String) {
-    localDataSource.enableNotificationFor(id)
-}
 
-override suspend fun disableNotificationFor(id: String) {
-    localDataSource.disableNotificationFor(id)
-}
+    override suspend fun enableNotificationFor(id: String, match: MatchDomain) {
+        localDataSource.enableNotificationFor(id, match)
+    }
+
+    override suspend fun disableNotificationFor(id: String, match: MatchDomain) {
+        localDataSource.disableNotificationFor(id, match)
+    }
 }

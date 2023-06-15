@@ -30,7 +30,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun fetchMatches() = viewModelScope.launch {
-        filterMatchesUseCase("", "")
+        getMatchesUseCase()
             .flowOn(Dispatchers.Main)
             .catch {
                 when(it) {
@@ -68,10 +68,10 @@ class MainViewModel @Inject constructor(
             runCatching {
                 withContext(Dispatchers.Main) {
                     val action = if (match.isNotificationEnabled) {
-                        disableNotificationUseCase(match.id)
+                        disableNotificationUseCase(match.id, match)
                         MainUiAction.DisableNotification(match)
                     } else {
-                        enableNotificationUseCase(match.id)
+                        enableNotificationUseCase(match.id, match)
                         MainUiAction.EnableNotification(match)
                     }
 

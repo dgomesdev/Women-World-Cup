@@ -9,13 +9,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.DrawerState
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberDrawerState
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.dgomesdev.women_world_cup.R
 
 @Composable
 fun MainMenuHeader() {
@@ -25,7 +29,7 @@ fun MainMenuHeader() {
             .padding(vertical = 64.dp),
         contentAlignment = Alignment.Center
     ) {
-        Text(text = "Header", fontSize = 60.sp)
+        Icon(painterResource(R.drawable.women_world_cup_logo), contentDescription = "")
     }
 }
 
@@ -54,5 +58,13 @@ fun MainMenuBody(
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MenuPreview() {
+    MainMenuBody(onFilterButtonTextChange = {}) {
+
     }
 }

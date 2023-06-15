@@ -9,10 +9,13 @@ import com.dgomesdev.local.source.MatchDataSourceLocal
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 
 private const val PREFERENCES_NAME = "notifications_prefs"
 
 @Module
+@InstallIn(SingletonComponent::class)
 interface LocalModule {
     @Binds
     fun providesMatchDataSourceLocal(impl: MatchDataSourceLocal): MatchesDataSource.Local
