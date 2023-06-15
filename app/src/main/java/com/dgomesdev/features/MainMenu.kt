@@ -1,15 +1,14 @@
 package com.dgomesdev.features
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.DrawerState
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.rememberDrawerState
-import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,7 +28,7 @@ fun MainMenuHeader() {
             .padding(vertical = 64.dp),
         contentAlignment = Alignment.Center
     ) {
-        Icon(painterResource(R.drawable.women_world_cup_logo), contentDescription = "")
+        Image(painterResource(R.drawable.womens_world_cup_logo), contentDescription = "")
     }
 }
 
@@ -40,7 +39,9 @@ fun MainMenuBody(
     onFilterSelected: () -> Unit
 ) {
     val filters = FilterLists.mainFilters
-    Column(modifier) {
+    Column(
+        modifier = modifier.background(MaterialTheme.colorScheme.secondary)
+    ) {
         for (filter in filters.entries.iterator()) {
             Row(
                 modifier = Modifier
@@ -50,6 +51,7 @@ fun MainMenuBody(
                         onFilterSelected()
                     }
                     .padding(16.dp)
+                    .background(color = MaterialTheme.colorScheme.secondary)
             ) {
                 Text(
                     text = filter.key,

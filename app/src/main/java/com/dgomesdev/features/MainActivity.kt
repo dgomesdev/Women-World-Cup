@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.rememberScaffoldState
@@ -78,14 +79,18 @@ class MainActivity : ComponentActivity() {
                     )
                 },
                 drawerContent = {
-                    MainMenuHeader()
-                    MainMenuBody(
-                        onFilterButtonTextChange = { filterButtonText = it },
-                        onFilterSelected = {
-                            scope.launch {
-                                scaffoldState.drawerState.close()
-                            }
-                        })
+                    Column(
+                        modifier = Modifier.background(MaterialTheme.colors.secondaryVariant)
+                    ) {
+                        MainMenuHeader()
+                        MainMenuBody(
+                            onFilterButtonTextChange = { filterButtonText = it },
+                            onFilterSelected = {
+                                scope.launch {
+                                    scaffoldState.drawerState.close()
+                                }
+                            })
+                    }
                 },
                 bottomBar = {
                     MatchesBottomNavigation(
