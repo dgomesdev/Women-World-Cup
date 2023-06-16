@@ -413,7 +413,7 @@
     "name": "GROUP D",
     "stadium": {
       "name": "HINDMARSH STADIUM",
-      "image": "https://dgomesdev.github.io/Women-World-Cup/docs/images/HIndmarsh-Stadium.jpg"
+      "image": "https://dgomesdev.github.io/Women-World-Cup/docs/images/Hindmarsh-Stadium.jpg"
     },
     "homeTeam": "CN",
     "awayTeam": "GB",
@@ -553,7 +553,7 @@
     "name": "ROUND OF 16",
     "stadium": {
       "name": "HINDMARSH STADIUM",
-      "image": "https://dgomesdev.github.io/Women-World-Cup/docs/images/HIndmarsh-Stadium.jpg"
+      "image": "https://dgomesdev.github.io/Women-World-Cup/docs/images/Hindmarsh-Stadium.jpg"
     },
     "homeTeam": "",
     "awayTeam": "",

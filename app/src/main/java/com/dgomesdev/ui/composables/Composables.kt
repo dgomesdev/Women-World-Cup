@@ -76,7 +76,7 @@ fun MatchTopBar(
             }
         },
         actions = {
-            IconButton(onClick = { Toast.makeText(context, "Info", Toast.LENGTH_SHORT).show() }) {
+            IconButton(onClick = { Toast.makeText(context, "Developed by Dgomes Dev", Toast.LENGTH_SHORT).show() }) {
                 Icon(
                     imageVector = Icons.Filled.Info,
                     contentDescription = "Localized description"
