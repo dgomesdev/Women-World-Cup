@@ -16,7 +16,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
-    private val url = "https://dgomesdev.github.io/Women-World-Cup/docs/JSONapi/"
+    private val url = "https://dgomesdev.github.io/Api-simulations/"
 
     @Provides
     @Singleton
