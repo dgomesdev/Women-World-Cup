@@ -1,11 +1,13 @@
 # Women's World Cup
-An app that lists the matches of the Women's World Cup 2023, giving you the possiblity to schedule notifications to each match, consulting your favorite matches and filterinng the matches in the screen by stage, stadium or team.
+An app lists the matches of the Women's World Cup 2023, giving you the possibility to schedule notifications for each match, consult your favorite matches, and filter the matches on the screen by stage, stadium, or team.
 
-This app is based on the one created by Digital Innovation One (DIO) team during the formation Android Experience. I added the filter and the favorite screen using Room, Navigation, Hilt and Jetpack Compose.
+This app is based on the one created by the Digital Innovation One (DIO) team, Venilton FalvoJr, Ezequiel Messore, Igor Rotondo Bagliotti and Pedro Henrique Silva, during the formation Android Experience. I added the filter and the favorite screen using Room, Navigation, Hilt and Jetpack Compose.
 
-The original appwas themed after the Men's World Cup 2022, I adapted it to the Women's competition.
+The original app was themed after the Men's World Cup 2022, I adapted it to the Women's competition. Written in Kotlin and using Jetpack compose, this app implements Workmanagers, Room, Dependency Injection with Hilt and Navigation.
 
-Feel free to make any suggetions!
+You can download it here: https://github.com/dgomesdev/Women-World-Cup/releases/download/Apk/Women.s.World.Cup.2023.apk
+
+Feel free to make any suggetions! 
 
 Main screen:
 ![Main screen](https://github.com/dgomesdev/Women-World-Cup/assets/114317159/98c51234-6527-4b94-8707-33433c3e36e4)
