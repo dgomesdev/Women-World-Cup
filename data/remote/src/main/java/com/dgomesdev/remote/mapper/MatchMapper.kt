@@ -30,15 +30,24 @@ private fun Date.toLocalDateTime(): LocalDateTime {
 private fun String.toTeam(): TeamDomain {
     return TeamDomain(
         flag = getTeamFlag(this),
-        displayName = Locale("", this).isO3Country
+        displayName = try {
+            Locale("", this).isO3Country
+        } catch (e: Exception) {
+            ""
+        }
     )
 }
 
 private fun getTeamFlag(team: String): String {
-    return team.map {
-        String(Character.toChars(it.code + 127397))
-    }.joinToString("")
+    return try {
+        team.map {
+            String(Character.toChars(it.code + 127397))
+        }.joinToString("")
+    } catch (e: Exception) {
+        "🏳️"
+    }
 }
+
 
 fun StadiumRemote.toDomain(): StadiumDomain {
     return StadiumDomain(

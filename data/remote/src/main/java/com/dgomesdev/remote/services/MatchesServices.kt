@@ -5,6 +5,6 @@ import retrofit2.http.GET
 
 interface MatchesServices {
 
-    @GET("womenWorldCup.json")
+    @GET("MatchesAPI.json")
     suspend fun getMatchesService(): List<MatchRemote>
 }

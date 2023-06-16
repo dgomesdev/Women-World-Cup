@@ -28,7 +28,7 @@ fun MatchesNavHost (
             MainScreen(matches = matches, onNotificationClick = onNotificationClick, onFilterChosen = onFilterChosen, onRefreshFavoritesScreen = onRefreshFavoritesScreen, filterButtonText = filterButtonText)
         }
         composable(route = "FavoritesScreen") {
-            FavoritesScreen(favoriteMatches = favoriteMatches, removeFavorite = removeFavorite, onFilterChosen = onFilterChosen, onRefreshFavoritesScreen = onRefreshFavoritesScreen)
+            FavoritesScreen(favoriteMatches = favoriteMatches, removeFavorite = removeFavorite, onFilterChosen = onFilterChosen, onRefreshFavoritesScreen = onRefreshFavoritesScreen, filterButtonText = filterButtonText)
         }
     }
 }

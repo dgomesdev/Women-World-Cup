@@ -15,13 +15,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.dgomesdev.domain.model.MatchDomain
 import com.dgomesdev.extensions.observe
 import com.dgomesdev.notification_scheduler.extensions.NotificationMatchWorker
+import com.dgomesdev.ui.composables.DrawerBody
+import com.dgomesdev.ui.composables.DrawerHeader
+import com.dgomesdev.ui.composables.MatchTopBar
+import com.dgomesdev.ui.composables.MatchesBottomNavigation
 import com.dgomesdev.ui.theme.WomenWorldCupTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -80,10 +83,11 @@ class MainActivity : ComponentActivity() {
                 },
                 drawerContent = {
                     Column(
-                        modifier = Modifier.background(MaterialTheme.colors.secondaryVariant)
+                        modifier = Modifier.background(MaterialTheme.colors.secondary)
                     ) {
-                        MainMenuHeader()
-                        MainMenuBody(
+                        DrawerHeader()
+                        DrawerBody(
+                            modifier = Modifier.background(MaterialTheme.colors.secondary),
                             onFilterButtonTextChange = { filterButtonText = it },
                             onFilterSelected = {
                                 scope.launch {
