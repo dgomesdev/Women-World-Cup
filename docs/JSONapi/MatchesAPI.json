@@ -197,7 +197,7 @@
     },
     "homeTeam": "ES",
     "awayTeam": "ZM",
-    "date": "2023-08-02T11:00:00Z"
+    "date": "2023-07-26T07:30:00Z"
   },
   {
     "name": "GROUP B",
@@ -303,7 +303,7 @@
     "name": "GROUP H",
     "stadium": {
       "name": "HINDMARSH  STADIUM",
-      "image": "https://dgomesdev.github.io/Women-World-Cup/docs/images/HIndmarsh-Stadium.webp"
+      "image": "https://dgomesdev.github.io/Women-World-Cup/docs/images/Hindmarsh-Stadium.webp"
     },
     "homeTeam": "KR",
     "awayTeam": "MA",
@@ -343,7 +343,7 @@
     "name": "GROUP C",
     "stadium": {
       "name": "WAIKATO  STADIUM",
-      "image": "https://dgomesdev.github.io/Women-World-Cup/docs/images/HIndmarsh-Stadium.webp"
+      "image": "https://dgomesdev.github.io/Women-World-Cup/docs/images/Hindmarsh-Stadium.webp"
     },
     "homeTeam": "CR",
     "awayTeam": "ZM",
@@ -433,7 +433,7 @@
     "name": "GROUP G",
     "stadium": {
       "name": "WAIKATO  STADIUM",
-      "image": "https://dgomesdev.github.io/Women-World-Cup/docs/images/HIndmarsh-Stadium.webp"
+      "image": "https://dgomesdev.github.io/Women-World-Cup/docs/images/Hindmarsh-Stadium.webp"
     },
     "homeTeam": "AR",
     "awayTeam": "SE",
