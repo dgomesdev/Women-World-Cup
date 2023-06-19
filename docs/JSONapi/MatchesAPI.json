@@ -303,7 +303,7 @@
     "name": "GROUP H",
     "stadium": {
       "name": "HINDMARSH  STADIUM",
-      "image": "https://dgomesdev.github.io/Women-World-Cup/docs/images/Hindmarsh-Stadium.webp"
+      "image": "https://dgomesdev.github.io/Women-World-Cup/docs/images/Hindmarsh-Stadium.jpg"
     },
     "homeTeam": "KR",
     "awayTeam": "MA",
@@ -343,7 +343,7 @@
     "name": "GROUP C",
     "stadium": {
       "name": "WAIKATO  STADIUM",
-      "image": "https://dgomesdev.github.io/Women-World-Cup/docs/images/Hindmarsh-Stadium.webp"
+      "image": "https://dgomesdev.github.io/Women-World-Cup/docs/images/Hindmarsh-Stadium.jpg"
     },
     "homeTeam": "CR",
     "awayTeam": "ZM",
@@ -433,7 +433,7 @@
     "name": "GROUP G",
     "stadium": {
       "name": "WAIKATO  STADIUM",
-      "image": "https://dgomesdev.github.io/Women-World-Cup/docs/images/Hindmarsh-Stadium.webp"
+      "image": "https://dgomesdev.github.io/Women-World-Cup/docs/images/Hindmarsh-Stadium.jpg"
     },
     "homeTeam": "AR",
     "awayTeam": "SE",
